@@ -10,6 +10,8 @@ config :ecommerce, Ecommerce.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
+config :ecommerce, Ecommerce.Repo, migration_timestamps: [type: :utc_datetime]
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
