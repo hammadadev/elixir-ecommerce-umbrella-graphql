@@ -46,7 +46,9 @@ defmodule EcommerceWeb.MixProject do
       {:gettext, "~> 0.18"},
       {:ecommerce, in_umbrella: true},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:absinthe, "~> 1.7.0"},
+      {:absinthe_plug, "~> 1.5"}
     ]
   end
 

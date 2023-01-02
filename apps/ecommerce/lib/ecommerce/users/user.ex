@@ -7,7 +7,8 @@ defmodule Ecommerce.Users.User do
     field :first_name, :string
     field :password, :string, redact: true
     field :last_name, :string
-    field :telephone, :integer
+    field :telephone, :string
+    field :role, :string, default: "customer"
   end
 
   @required_attrs ~w(username email first_name password)a
@@ -19,5 +20,6 @@ defmodule Ecommerce.Users.User do
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
     |> unique_constraint(:username)
+    |> validate_inclusion(:role, ["customer", "admin"])
   end
 end
