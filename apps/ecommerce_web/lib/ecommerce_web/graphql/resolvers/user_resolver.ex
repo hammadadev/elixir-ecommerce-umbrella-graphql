@@ -10,4 +10,14 @@ defmodule EcommerceWeb.Graphql.Schema.Resolvers.UserResolver do
         {:ok, user}
     end
   end
+
+  def create_user(_, %{input: params}, _) do
+    case Users.create_user(params) do
+      {:error, _changeset} ->
+        {:error, "Error"}
+
+      {:ok, user} ->
+        {:ok, user}
+    end
+  end
 end

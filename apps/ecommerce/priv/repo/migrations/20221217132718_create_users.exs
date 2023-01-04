@@ -8,7 +8,7 @@ defmodule Ecommerce.Repo.Migrations.CreateUsers do
       add(:username, :string, null: false)
       add(:email, :string, null: false)
       add(:first_name, :string, null: false)
-      add(:password, :string, null: false)
+      add(:password_hash, :string, null: false)
       add(:last_name, :string)
       add(:telephone, :string)
       add(:role, :role_type, default: "customer")

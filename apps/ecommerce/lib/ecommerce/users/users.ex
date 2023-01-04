@@ -11,4 +11,9 @@ defmodule Ecommerce.Users.Users do
         user
     end
   end
+
+  def create_user(params) do
+    changeset = User.changeset(%User{}, params)
+    Repo.insert(changeset)
+  end
 end
