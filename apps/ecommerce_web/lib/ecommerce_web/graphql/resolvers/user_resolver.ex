@@ -1,5 +1,6 @@
 defmodule EcommerceWeb.Graphql.Schema.Resolvers.UserResolver do
   alias Ecommerce.Users.Users
+  alias EcommerceWeb.Graphql.Errors
 
   def find_user(_parent, %{id: id}, _resolution) do
     case Users.find_user(id) do
@@ -13,8 +14,11 @@ defmodule EcommerceWeb.Graphql.Schema.Resolvers.UserResolver do
 
   def create_user(_, %{input: params}, _) do
     case Users.create_user(params) do
-      {:error, _changeset} ->
-        {:error, "Error"}
+      {:error, changeset} ->
+        {
+          :error,
+          message: "Errors creating user", details: Errors.error_details(changeset)
+        }
 
       {:ok, user} ->
         {:ok, user}
