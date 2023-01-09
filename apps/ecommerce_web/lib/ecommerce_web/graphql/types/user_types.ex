@@ -12,6 +12,11 @@ defmodule EcommerceWeb.Graphql.Schema.Types.UserTypes do
     field(:telephone, :string)
   end
 
+  object :login_details do
+    field(:token, :string)
+    field(:user, :user)
+  end
+
   input_object :user_input do
     field(:username, non_null(:string))
     field(:email, non_null(:string))
@@ -19,6 +24,11 @@ defmodule EcommerceWeb.Graphql.Schema.Types.UserTypes do
     field(:password, non_null(:string))
     field(:last_name, :string)
     field(:telephone, :string)
+  end
+
+  input_object :login_input do
+    field(:email, non_null(:string))
+    field(:password, non_null(:string))
   end
 
   object :user_queries do
@@ -31,9 +41,15 @@ defmodule EcommerceWeb.Graphql.Schema.Types.UserTypes do
 
   object :user_mutations do
     @desc "Create a user"
-    field :create_user, :user do
+    field :create_user, :login_details do
       arg(:input, non_null(:user_input))
       resolve(&UserResolver.create_user/3)
+    end
+
+    @desc "Return a user and token"
+    field :login, :login_details do
+      arg(:input, non_null(:login_input))
+      resolve(&UserResolver.validate_user/3)
     end
   end
 end

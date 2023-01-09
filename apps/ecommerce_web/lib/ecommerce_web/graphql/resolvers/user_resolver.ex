@@ -20,8 +20,12 @@ defmodule EcommerceWeb.Graphql.Schema.Resolvers.UserResolver do
           message: "Errors creating user", details: Errors.error_details(changeset)
         }
 
-      {:ok, user} ->
-        {:ok, user}
+      {:ok, data} ->
+        {:ok, data}
     end
+  end
+
+  def validate_user(_, %{input: params}, _) do
+    Users.validate_user(params)
   end
 end

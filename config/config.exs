@@ -54,6 +54,12 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+config :ecommerce, Ecommerce.Guardian,
+  issuer: "ecommerce",
+  allowed_algos: ["HS512"],
+  ttl: {1, :week},
+  secret_key: "ZT792Egkt48wIlL+twT3+H8lIXjVFgZeHQ0N5uLphGr/QEOfDb/ie6xj4EhNYeHY"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
