@@ -3,6 +3,7 @@ defmodule EcommerceWeb.Router do
 
   pipeline :graphql do
     plug :accepts, ["json"]
+    plug Ecommerce.Context
   end
 
   scope "/api" do
@@ -11,6 +12,7 @@ defmodule EcommerceWeb.Router do
   end
 
   if Mix.env() == :dev do
+    pipe_through :graphql
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: EcommerceWeb.Graphql.Schema
   end
 end
