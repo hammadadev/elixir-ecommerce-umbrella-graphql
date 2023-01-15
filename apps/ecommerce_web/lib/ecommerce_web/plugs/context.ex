@@ -19,6 +19,9 @@ defmodule Ecommerce.Context do
     with ["Bearer " <> token] <- get_req_header(conn, "authorization"),
          {:ok, current_user} <- authorize(token) do
       {:ok, %{current_user: current_user}}
+    else
+      _ ->
+        %{}
     end
   end
 

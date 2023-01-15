@@ -49,7 +49,7 @@ defmodule EcommerceWeb.Graphql.Schema.Types.UserTypes do
     @desc "Return a user and token"
     field :login, :login_details do
       arg(:input, non_null(:login_input))
-      resolve(&UserResolver.validate_user/3)
+      resolve(&UserResolver.user_login/3)
     end
   end
 end

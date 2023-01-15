@@ -1,31 +1,13 @@
 defmodule EcommerceWeb.Graphql.Schema.Resolvers.UserResolver do
   alias Ecommerce.Users.Users
-  alias EcommerceWeb.Graphql.Errors
-
-  def find_user(_parent, %{id: id}, _resolution) do
-    case Users.find_user(id) do
-      nil ->
-        {:error, "User ID #{id} not found"}
-
-      user ->
-        {:ok, user}
-    end
-  end
+  # TODO: Remove id params and get current user from token.
+  def find_user(_parent, %{id: id}, _resolution), do: Users.find_user(id)
 
   def create_user(_, %{input: params}, _) do
-    case Users.create_user(params) do
-      {:error, changeset} ->
-        {
-          :error,
-          message: "Errors creating user", details: Errors.error_details(changeset)
-        }
-
-      {:ok, data} ->
-        {:ok, data}
-    end
+    Users.create_user(params)
   end
 
-  def validate_user(_, %{input: params}, _) do
-    Users.validate_user(params)
+  def user_login(_, %{input: params}, _) do
+    Users.user_login(params)
   end
 end

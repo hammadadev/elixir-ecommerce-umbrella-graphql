@@ -5,7 +5,7 @@ defmodule Ecommerce.Users.Users do
   def find_user(id) do
     case Repo.get(User, id) do
       nil ->
-        nil
+        {:error, "user not found"}
 
       user ->
         user
@@ -15,36 +15,25 @@ defmodule Ecommerce.Users.Users do
   def create_user(params) do
     changeset = User.changeset(%User{}, params)
 
-    case Repo.insert(changeset) do
-      {:ok, user} ->
-        {:ok, token, _claims} = Ecommerce.Guardian.encode_and_sign(user)
-        {:ok, %{token: token, user: user}}
-
-      {:error, changeset} ->
-        {:error, changeset}
+    with {:ok, user} <- Repo.insert(changeset),
+         {:ok, token, _claims} <- Ecommerce.Guardian.encode_and_sign(user) do
+      {:ok, %{token: token, user: user}}
     end
   end
 
-  def validate_user(params) do
+  def user_login(params) do
     with %User{} = user <- find_user_by_email(params.email),
-         {:ok, _} <- verify_user_password(params.password, user.password_hash) do
+         true <- verify_user_password(params.password, user.password_hash) do
       {:ok, token, _claims} = Ecommerce.Guardian.encode_and_sign(user)
       {:ok, %{token: token, user: user}}
     else
       _ ->
-        {:error, "Username or password is incorrect"}
+        {:error, "username or password is incorrect"}
     end
   end
 
   def find_user_by_email(email), do: Repo.get_by(User, email: email)
 
-  def verify_user_password(password, password_hash) do
-    case Bcrypt.verify_pass(password, password_hash) do
-      false ->
-        {:error, "invalid password"}
-
-      true ->
-        {:ok, "Correct password"}
-    end
-  end
+  def verify_user_password(password, password_hash),
+    do: Bcrypt.verify_pass(password, password_hash)
 end
