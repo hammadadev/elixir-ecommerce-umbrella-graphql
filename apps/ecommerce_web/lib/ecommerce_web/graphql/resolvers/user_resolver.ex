@@ -1,7 +1,9 @@
 defmodule EcommerceWeb.Graphql.Schema.Resolvers.UserResolver do
   alias Ecommerce.Users.Users
-  # TODO: Remove id params and get current user from token.
-  def find_user(_parent, %{id: id}, _resolution), do: Users.find_user(id)
+
+  def find_user(_parent, _, %{context: %{current_user: current_user}}) do
+    {:ok, current_user}
+  end
 
   def create_user(_, %{input: params}, _) do
     Users.create_user(params)

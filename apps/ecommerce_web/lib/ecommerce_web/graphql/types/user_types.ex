@@ -1,6 +1,7 @@
 defmodule EcommerceWeb.Graphql.Schema.Types.UserTypes do
   use Absinthe.Schema.Notation
   alias EcommerceWeb.Graphql.Schema.Resolvers.UserResolver
+  alias EcommerceWeb.Graphql.Schema.Middleware.Unauthorize
 
   @desc "A user of the system"
   object :user do
@@ -32,9 +33,8 @@ defmodule EcommerceWeb.Graphql.Schema.Types.UserTypes do
   end
 
   object :user_queries do
-    @desc "Get user of the system"
+    @desc "Get current user"
     field :user, :user do
-      arg(:id, non_null(:id))
       resolve(&UserResolver.find_user/3)
     end
   end
@@ -44,12 +44,14 @@ defmodule EcommerceWeb.Graphql.Schema.Types.UserTypes do
     field :create_user, :login_details do
       arg(:input, non_null(:user_input))
       resolve(&UserResolver.create_user/3)
+      middleware(Unauthorize)
     end
 
     @desc "Return a user and token"
     field :login, :login_details do
       arg(:input, non_null(:login_input))
       resolve(&UserResolver.user_login/3)
+      middleware(Unauthorize)
     end
   end
 end

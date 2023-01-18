@@ -5,12 +5,10 @@ defmodule EcommerceWeb.Graphql.Schema do
   import_types(Schema.Types.UserTypes)
 
   def middleware(middleware, field, %{identifier: :mutation}) do
-    # middleware Authorize, field.identifier
-
     [{Authorize, field.identifier}] ++ middleware ++ [ChangesetErrors]
   end
 
-  def middleware(middleware, _field, _object), do: [Authorize] ++ middleware
+  def middleware(middleware, field, _object), do: [{Authorize, field.identifier}] ++ middleware
 
   query do
     import_fields(:user_queries)
