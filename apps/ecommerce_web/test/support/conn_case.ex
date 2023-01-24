@@ -23,6 +23,8 @@ defmodule EcommerceWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import EcommerceWeb.ConnCase
+      import Ecommerce.Factory
+      import EcommerceWeb.Test.Support.LoginUser
 
       alias EcommerceWeb.Router.Helpers, as: Routes
 
