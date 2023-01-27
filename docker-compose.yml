@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  apps:
+    build:
+      context: .
+      dockerfile: ./docker/development/Dockerfile
+    environment:
+         # Variables to connect to our Postgres server.
+         PGUSER: postgres
+         PGPASSWORD: postgres
+         PGDATABASE: ecommerce_dev
+         PGPORT: 5432
+         # Hostname of our Postgres container.
+         PGHOST: db  
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/apps
+    depends_on:
+      - db
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    restart: always  
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
