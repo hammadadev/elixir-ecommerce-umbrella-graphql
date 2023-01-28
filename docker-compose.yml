@@ -12,6 +12,7 @@ services:
          PGPORT: 5432
          # Hostname of our Postgres container.
          PGHOST: db  
+         DOCKER: true
     ports:
       - "4000:4000"
     volumes:

@@ -1,10 +1,10 @@
 import Config
-
+ip = if System.get_env("DOCKER"), do: {0, 0, 0, 0}, else: {127, 0, 0, 1}
 # Configure your database
 config :ecommerce, Ecommerce.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "db",
+  hostname: System.get_env("PGHOST") || "localhost",
   database: "ecommerce_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
@@ -21,7 +21,7 @@ config :ecommerce, Ecommerce.Repo, migration_timestamps: [type: :utc_datetime]
 config :ecommerce_web, EcommerceWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {0, 0, 0, 0}, port: 4000],
+  http: [ip: ip, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
